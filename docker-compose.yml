@@ -6,4 +6,9 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - "80:80"  # Host port 80 to container port 80
+    volumes:
+      - .:/app  # Mount local files into the container
+      - /app/node_modules  # Prevent overwriting container's node_modules
+    environment:
+      - NODE_ENV=development

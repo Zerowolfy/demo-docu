@@ -1,5 +1,5 @@
 # Use a Node.js base image
-FROM node:18-alpine AS build
+FROM node:18-alpine
 
 # Set the working directory
 WORKDIR /app
@@ -13,14 +13,8 @@ RUN npm install
 # Copy the rest of the application
 COPY . .
 
-# Build the static site
-RUN npm run build
-
-# Use an Nginx image to serve the static files
-FROM nginx:alpine
-
-# Copy the static files from the build step
-COPY --from=build /app/build /usr/share/nginx/html
-
-# Expose the port Nginx runs on
+# Expose port 80
 EXPOSE 80
+
+# Start the development server
+CMD ["npm", "run", "start", "--", "--port", "80", "--host", "0.0.0.0", "--poll"]
